@@ -1,20 +1,65 @@
-// Game Snake.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_ttf.h>
+#include <SDL_mixer.h>
+#include <math.h>
+#include <string>
+#include <stdio.h>
+#include "Texture.h"
 
-#include <iostream>
+const int window_width = 1920;
+const int window_height = 1080;
 
-int main()
+SDL_Window* my_window = NULL;
+SDL_Renderer* renderer = NULL;
+TTF_Font* gFont = NULL;
+
+bool init()
 {
-    std::cout << "Hello World!\n";
+	bool success = true;
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
+		success = false;
+	else
+	{
+		my_window = SDL_CreateWindow("SDL Tutorial", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, window_width, window_height, SDL_WINDOW_SHOWN);
+		if (my_window == NULL)
+			success = false;
+		else
+		{
+			renderer = SDL_CreateRenderer(my_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+			if (renderer == NULL)
+				success = false;
+			else
+			{
+				SDL_SetRenderDrawColor(renderer, 0xFF, 0xFF, 0xFF, 0xFF);
+				int imgFlags = IMG_INIT_PNG;
+				if (!(IMG_Init(imgFlags) & imgFlags))
+					success = false;
+				{
+					if (TTF_Init() == -1)
+						success = false;
+				}
+			}
+		}
+	}
+	return success;
 }
 
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
+void close()
+{
+	TTF_CloseFont(gFont);
+	gFont = NULL;
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(my_window);
+	my_window = NULL;
+	renderer = NULL;
 
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
+	IMG_Quit();
+	SDL_Quit();
+	TTF_Quit();
+}
+
+int main(int argc, char* args[])
+{
+	return 0;
+}
