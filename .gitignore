@@ -3,3 +3,12 @@
 *.user
 .vs/
 x64/
+*.png
+*.h
+SDL2-2.0.14/
+SDL2_ttf-2.0.15/
+SDL2_image-2.0.15/
+*.ttf
+*.txt
+*.dll
+*.lib
